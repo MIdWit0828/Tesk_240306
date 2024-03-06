@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ohgiraffers.tesk_240306.mvc.model.dao.MenuDAO">
+    <select id="selectOneMenuById" resultType="com.ohgiraffers.tesk_240306.mvc.model.dto.MenuDTO">
+        SELECT
+            m.menu_code,
+            m.menu_name,
+            m.menu_price,
+            c.category_name,
+            m.orderable_status
+        FROM tbl_menu m
+        JOIN tbl_category c USING(category_code)
+        WHERE
+            m.menu_code = #{menuCode}
+        ORDER BY
+            m.menu_code
+    </select>
+    <select id="selectByPrice" resultType="com.ohgiraffers.tesk_240306.mvc.model.dto.MenuDTO">
+        SELECT
+            m.menu_code,
+            m.menu_name,
+            m.menu_price,
+            c.category_name,
+            m.orderable_status
+        FROM tbl_menu m
+        JOIN tbl_category c USING(category_code)
+        WHERE
+            m.menu_price >= #{targetPrice}
+        ORDER BY
+            m.menu_price
+    </select>
+    <select id="selectAll" resultType="com.ohgiraffers.tesk_240306.mvc.model.dto.MenuDTO">
+        SELECT
+            m.menu_code,
+            m.menu_name,
+            m.menu_price,
+            c.category_name,
+            m.orderable_status
+        FROM tbl_menu m
+        JOIN tbl_category c USING(category_code)
+        ORDER BY
+            m.menu_code
+    </select>
+
+    <insert id="insertMenu">
+        INSERT INTO
+            tbl_menu
+        (
+            menu_name,
+            menu_price,
+            category_code,
+            orderable_status
+        )
+        VALUES
+        (
+            #{menuName},
+            #{menuPrice},
+            #{categoryCode},
+            #{orderableStatus}
+        )
+    </insert>
+    <update id="updateByCode">
+        UPDATE tbl_menu
+        SET
+            category_code = #{categoryCode}
+        WHERE
+            menu_code = #{menuCode}
+    </update>
+    <delete id="deleteByCode">
+        DELETE FROM tbl_menu
+        WHERE
+            menu_code = #{menuCode}
+    </delete>
+</mapper>
